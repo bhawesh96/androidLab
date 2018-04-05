@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "537335077798",
+    "firebase_url": "https://glint-logic.firebaseio.com",
+    "project_id": "glint-logic",
+    "storage_bucket": "glint-logic.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:537335077798:android:85b9818081057b54",
+        "android_client_info": {
+          "package_name": "com.example.rakshit.glintlogicinternship"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "537335077798-vunnri98gmnu2lu7jjevfa6imusjp5cq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.rakshit.glintlogicinternship",
+            "certificate_hash": "6f243099790ce844cbf04730e302b903268a4316"
+          }
+        },
+        {
+          "client_id": "537335077798-3mhdmvfeqmk523p9tvcnqrb4u2n526fv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGfSI2Rtrnt_O1zziw7dOjVz25Cc3Iqx0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "537335077798-3mhdmvfeqmk523p9tvcnqrb4u2n526fv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
