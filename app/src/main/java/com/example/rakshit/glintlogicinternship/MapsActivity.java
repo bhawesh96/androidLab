@@ -63,7 +63,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     SensorManager sensorManager;
     Sensor accelSensor, gyroSensor, gravitySensor;
-    TextView tx, ty, tz;
+    TextView tx, ty, tz, tgx, tgy, tgz;
 
     Location location;
     double latitude;
@@ -96,9 +96,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         tv_lat = (TextView)findViewById(R.id.textViewLatitude);
         tv_lon = (TextView)findViewById(R.id.textViewLongitude);
-        tx = (TextView) findViewById(R.id.textViewX);
-        ty = (TextView) findViewById(R.id.textViewY);
-        tz = (TextView) findViewById(R.id.textViewZ);
+        tx = (TextView) findViewById(R.id.textViewgX);
+        ty = (TextView) findViewById(R.id.textViewgY);
+        tz = (TextView) findViewById(R.id.textViewgZ);
+        tgx = (TextView)findViewById(R.id.textViewgravityX);
+        tgy = (TextView)findViewById(R.id.textViewgravityY);
+        tgz = (TextView)findViewById(R.id.textViewgravityZ);
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -168,9 +171,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             float y = event.values[1];
             float z = event.values[2];
 
-            tx.setText("gyro X : " + (int)x);
-            ty.setText("gyro Y : " + (int)y);
-            tz.setText("gyro Z : " + (int)z);
+            tgx.setText("gyro X : " + (int)x);
+            tgy.setText("gyro Y : " + (int)y);
+            tgz.setText("gyro Z : " + (int)z);
 
             if(Math.abs(x) >= 8 || Math.abs(y) >= 8)
                 vibrator.vibrate(500);
@@ -190,9 +193,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             float y = event.values[1];
             float z = event.values[2];
 
-            tx.setText("accel X : " + (int)x);
-            ty.setText("accel Y : " + (int)y);
-            tz.setText("accel Z : " + (int)z);
+//            tx.setText("accel X : " + (int)x);
+//            ty.setText("accel Y : " + (int)y);
+//            tz.setText("accel Z : " + (int)z);
         }
     };
 
@@ -351,7 +354,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if(x == NaN){
             x = 0.0;
         }
-        
+
         tv_lat.setText("dist : " + Double.toString(x));
         tv_lon.setText("Lon : " + Double.toString(location.getLongitude()));
         updateLocation(new LatLng(location.getLatitude(), location.getLongitude()));

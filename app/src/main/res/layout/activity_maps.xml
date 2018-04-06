@@ -20,9 +20,8 @@
         android:id="@+id/buttonStopTrip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/map"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="125dp"
+        android:layout_centerVertical="true"
         android:text="STOP TRIP" />
 
     <TextView
@@ -45,7 +44,7 @@
         android:text="TextView" />
 
     <TextView
-        android:id="@+id/textViewX"
+        android:id="@+id/textViewgravityX"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/textViewLatitude"
@@ -54,18 +53,44 @@
         android:text="TextView" />
 
     <TextView
-        android:id="@+id/textViewY"
+        android:id="@+id/textViewgravityY"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textViewX"
+        android:layout_alignTop="@+id/textViewgravityX"
         android:layout_centerHorizontal="true"
         android:text="TextView" />
 
     <TextView
-        android:id="@+id/textViewZ"
+        android:id="@+id/textViewgravityZ"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textViewY"
+        android:layout_alignBottom="@+id/textViewgravityY"
+        android:layout_alignEnd="@+id/textViewLongitude"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/textViewgX"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textViewLatitude"
+        android:layout_below="@+id/buttonStopTrip"
+        android:layout_alignTop="@+id/textViewgravityX"
+        android:layout_marginTop="27dp"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/textViewgY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textViewgX"
+        android:layout_centerHorizontal="true"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/textViewgZ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textViewgY"
         android:layout_alignEnd="@+id/textViewLongitude"
         android:text="TextView" />
 
