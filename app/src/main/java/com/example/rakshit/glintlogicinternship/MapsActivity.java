@@ -439,7 +439,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         //HERE RAHUL
         double x = 0.0;
         if(prevLatLng!=null)
-            x = getDistance(prevLatLng, new LatLng(location.getLatitude(), location.getLongitude()));
+            x = x+getDistance(prevLatLng, new LatLng(location.getLatitude(), location.getLongitude()));
 
         if(x == NaN){
             x = 0.0;
