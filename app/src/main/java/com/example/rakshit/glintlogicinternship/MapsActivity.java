@@ -68,7 +68,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     boolean canGetLocation = false;
 
     SensorManager sensorManager;
-    Sensor accelSensor, gyroSensor, gravitySensor;
+    Sensor accelSensor, gyroSensor, gravitySensor, proximitySensor;
     TextView tx, ty, tz, tgx, tgy, tgz;
     Button buttonStopTrip;
 
@@ -123,6 +123,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         gyroSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+        proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
 
         buttonStopTrip.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,6 +220,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         sensorManager.registerListener(accelListener, accelSensor, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(gyroListener, gyroSensor, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(gravityListener, gravitySensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(proximityListener, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
+
     }
 
     // GYROSCOPE
@@ -239,6 +242,25 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 vibrator.vibrate(500);
                 jerkCount+=1;
             }
+
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int i) { }
+    };
+
+    // PROXIMITY
+    SensorEventListener proximityListener = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            float x = event.values[0];
+            float y = event.values[1];
+            float z = event.values[2];
+
+
+            tgx.setText("proxy X : " + (int)x);
+            tgy.setText("proxy Y : " + (int)y);
+            tgz.setText("proxy Z : " + (int)z);
 
         }
 
