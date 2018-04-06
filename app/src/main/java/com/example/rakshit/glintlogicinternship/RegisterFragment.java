@@ -124,7 +124,7 @@ public class RegisterFragment extends Fragment
                                                                 {
                                                                     Toast.makeText(getActivity(), "Registration successful :)", Toast.LENGTH_SHORT).show();
                                                                     Utils.setAdmin(false);
-                                                                    startActivity(new Intent(getActivity(), MapsActivity.class));
+                                                                    startActivity(new Intent(getActivity(), HomeActivity.class));
                                                                 }
                                                                 else
                                                                 {
