@@ -1,6 +1,7 @@
 package com.example.rakshit.glintlogicinternship;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -12,14 +13,18 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +69,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     SensorManager sensorManager;
     Sensor accelSensor, gyroSensor, gravitySensor;
     TextView tx, ty, tz, tgx, tgy, tgz;
+    Button buttonStopTrip;
+
+    int jerkCount = 0;
 
     Location location;
     double latitude;
@@ -71,6 +79,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     LatLng prevLatLng = null;
     Vibrator vibrator;
+
+    AlertDialog.Builder detailsDialog;
 
     TextView tv_lat, tv_lon;
 
@@ -103,12 +113,53 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         tgy = (TextView)findViewById(R.id.textViewgravityY);
         tgz = (TextView)findViewById(R.id.textViewgravityZ);
 
+        buttonStopTrip = (Button)findViewById(R.id.buttonStopTrip);
+
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         gyroSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
 
+        buttonStopTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final AlertDialog.Builder builder;
+                builder = new AlertDialog.Builder(MapsActivity.this);
+                builder.setTitle("Stop trip")
+                        .setMessage("Are you sure you want to stop this trip?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(getApplicationContext(), "Show trip details", Toast.LENGTH_SHORT).show();;
+                                final AlertDialog.Builder detailsBuilder;
+                                detailsBuilder = new AlertDialog.Builder(MapsActivity.this);
+                                detailsBuilder.setTitle("Trip Details")
+                                        .setMessage("Number of jerks: " + Integer.toString(jerkCount))
+                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                                startActivity(new Intent(MapsActivity.this, HomeActivity.class));
+                                            }
+                                        })
+                                        .setNegativeButton("EXIT", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                                startActivity(new Intent(MapsActivity.this, HomeActivity.class));
+                                            }
+                                        })
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .show();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+        });
 
         if (!Utils.isAdmin())
         {
@@ -170,13 +221,32 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             float x = event.values[0];
             float y = event.values[1];
             float z = event.values[2];
+            int f = 1;
+            int i = 0;
 
+<<<<<<< HEAD
             tgx.setText("gyro X : " + (int)x);
             tgy.setText("gyro Y : " + (int)y);
             tgz.setText("gyro Z : " + (int)z);
+=======
+//            tx.setText("gyro X : " + (int)x);
+//            ty.setText("gyro Y : " + (int)y);
+//            tz.setText("gyro Z : " + (int)z);
+>>>>>>> ae61339d98de6d8faa642c356311414e82be8d84
 
-            if(Math.abs(x) >= 8 || Math.abs(y) >= 8)
+            if(Math.abs(x) >= 10 || Math.abs(y) >= 10 && f==1) {
                 vibrator.vibrate(500);
+                f = 0;
+                i += 1;
+                Toast.makeText(MapsActivity.this, Integer.toString(i), Toast.LENGTH_SHORT).show();
+                jerkCount=i;
+            }
+
+            if(f==0 && i > 5) {
+                jerkCount+=1;
+                i=0;
+                f=1;
+            }
 
         }
 
@@ -208,9 +278,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             float y = event.values[1];
             float z = event.values[2];
 
-            tx.setText("gravity X : " + (int)x);
-            ty.setText("gravity Y : " + (int)y);
-            tz.setText("gravity Z : " + (int)z);
+            tx.setText("gravity X: " + (int)x);
+            ty.setText("gravity Y: " + (int)y);
+            tz.setText("gravity Z: " + (int)z);
+
+            if(Math.abs(x) >= 9 || Math.abs(y) >= 9) {
+                long[] pattern = {0, 100, 200, 300, 200, 100, 300, 200, 100};
+                vibrator.vibrate(pattern, -1);
+            }
         }
     };
 
@@ -274,7 +349,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onBackPressed()
     {
-        finish();
+        Toast.makeText(this, "You need to stop the trip", Toast.LENGTH_SHORT).show();
     }
 
     public Location getLocation()
@@ -427,7 +502,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 Toast.makeText(MapsActivity.this, "Location update failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             else {
 
-                                Toast.makeText(MapsActivity.this, "Location value updated: ", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(MapsActivity.this, "Location value updated: ", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
