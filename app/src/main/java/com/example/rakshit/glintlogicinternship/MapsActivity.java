@@ -224,15 +224,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             int f = 1;
             int i = 0;
 
-<<<<<<< HEAD
+
             tgx.setText("gyro X : " + (int)x);
             tgy.setText("gyro Y : " + (int)y);
             tgz.setText("gyro Z : " + (int)z);
-=======
-//            tx.setText("gyro X : " + (int)x);
-//            ty.setText("gyro Y : " + (int)y);
-//            tz.setText("gyro Z : " + (int)z);
->>>>>>> ae61339d98de6d8faa642c356311414e82be8d84
+
 
             if(Math.abs(x) >= 10 || Math.abs(y) >= 10 && f==1) {
                 vibrator.vibrate(500);
