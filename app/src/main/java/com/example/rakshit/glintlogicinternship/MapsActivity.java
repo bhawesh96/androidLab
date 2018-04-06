@@ -48,6 +48,8 @@ import java.util.ArrayList;
 import java.util.List;
 import android.os.Vibrator;
 
+import static java.lang.Double.NaN;
+
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener
 {
     private GoogleMap mMap;
@@ -346,6 +348,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         double x = 0.0;
         if(prevLatLng!=null)
             x = getDistance(prevLatLng, new LatLng(location.getLatitude(), location.getLongitude()));
+        if(x == NaN){
+            x = 0.0;
+        }
+        
         tv_lat.setText("dist : " + Double.toString(x));
         tv_lon.setText("Lon : " + Double.toString(location.getLongitude()));
         updateLocation(new LatLng(location.getLatitude(), location.getLongitude()));
@@ -376,13 +382,24 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void run()
             {
+                int i;
+                for(i=0 ;i<points.size();i++);
+                if(i!=0)
+                    prevLatLng = points.get(i-1);
                 points.add(location);
                 if (MapsActivity.this.marker != null)
+                {
                     MapsActivity.this.marker.setPosition(location);
+                    prevLatLng = location;
+                }
                 else
+                {
                     MapsActivity.this.marker = mMap.addMarker(new MarkerOptions().position(location));
-                if (MapsActivity.this.polyline != null)
+                }
+                if (MapsActivity.this.polyline != null) {
                     MapsActivity.this.polyline.setPoints(points);
+
+                }
                 else
                     MapsActivity.this.polyline = mMap.addPolyline(new PolylineOptions().color(Color.BLUE).addAll(points));
 
@@ -404,9 +421,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         public void onComplete(@NonNull Task<Void> task)
                         {
                             if (!task.isSuccessful())
-                                Toast.makeText(MapsActivity.this, "Location update failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                            else
-                                Toast.makeText(MapsActivity.this, "Location value updated: " , Toast.LENGTH_LONG).show();
+                                Toast.makeText(MapsActivity.this, "Location update failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            else {
+
+                                Toast.makeText(MapsActivity.this, "Location value updated: ", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
             );
