@@ -49,6 +49,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import android.os.Vibrator;
@@ -70,6 +71,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     Sensor accelSensor, gyroSensor, gravitySensor;
     TextView tx, ty, tz, tgx, tgy, tgz;
     Button buttonStopTrip;
+
+    double dist;
 
     int jerkCount = 0;
 
@@ -133,8 +136,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 Toast.makeText(getApplicationContext(), "Show trip details", Toast.LENGTH_SHORT).show();;
                                 final AlertDialog.Builder detailsBuilder;
                                 detailsBuilder = new AlertDialog.Builder(MapsActivity.this);
+                                DecimalFormat df = new DecimalFormat();
+                                df.setMaximumFractionDigits(8);
+                                String d = df.format(dist);
                                 detailsBuilder.setTitle("Trip Details")
-                                        .setMessage("Number of jerks: " + Integer.toString(jerkCount))
+                                        .setMessage("Jerk duration (ms): " + (Integer.toString(jerkCount)) + "\n" + "Total distance (km): " + d)
+
                                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
@@ -221,8 +228,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             float x = event.values[0];
             float y = event.values[1];
             float z = event.values[2];
-            int f = 1;
-            int i = 0;
 
 
             tgx.setText("gyro X : " + (int)x);
@@ -230,18 +235,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             tgz.setText("gyro Z : " + (int)z);
 
 
-            if(Math.abs(x) >= 10 || Math.abs(y) >= 10 && f==1) {
+            if(Math.abs(x) >= 10 || Math.abs(y) >= 10) {
                 vibrator.vibrate(500);
-                f = 0;
-                i += 1;
-                Toast.makeText(MapsActivity.this, Integer.toString(i), Toast.LENGTH_SHORT).show();
-                jerkCount=i;
-            }
-
-            if(f==0 && i > 5) {
                 jerkCount+=1;
-                i=0;
-                f=1;
             }
 
         }
@@ -422,10 +418,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         double x = 0.0;
         if(prevLatLng!=null)
             x = getDistance(prevLatLng, new LatLng(location.getLatitude(), location.getLongitude()));
+
         if(x == NaN){
             x = 0.0;
-        }
 
+        }
+        dist = x;
         tv_lat.setText("dist : " + Double.toString(x));
         tv_lon.setText("Lon : " + Double.toString(location.getLongitude()));
         updateLocation(new LatLng(location.getLatitude(), location.getLongitude()));
